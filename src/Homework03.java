@@ -1,32 +1,17 @@
+import java.nio.charset.Charset;
+import java.util.Stack;
+
 /**
  * Created by Евгений on 11.05.2018.
  */
 public class Homework03 {
     public static void main(String[] args) {
-        //task_3_1();
-        task_3_2();
+        task_3_1();
+        //task_3_2();
     }
+
 
     private static void task_3_1() {
-
-        String input = "([])[({(())})]";
-
-        for (int i = 0; i < input.length(); i++) {
-            input = input.replace("()", "");
-            input = input.replace("{}", "");
-            input = input.replace("[]", "");
-        }
-
-        if (input.length() == 0) {
-            System.out.println("Input is correct");
-        } else {
-            System.out.println("input isn,t correct");
-        }
-    }
-
-    //=================================
-
-    private static void task_3_2() {
 
         StringBuilder input = new StringBuilder("//a/..////b/./c//.//");
 
@@ -50,4 +35,50 @@ public class Homework03 {
 
         System.out.println(input);
     }
+
+
+    //=================================
+    private static void task_3_2() {
+
+        String input = "([])[({(())})]";
+
+        Stack<Character> stack = new Stack<>();
+
+        switch (input.charAt(0)) {
+            case ')':
+            case ']':
+            case '}':
+                System.out.println("input isn,t correct");
+                return;
+        }
+
+        switch (input.charAt(input.length() - 1)) {
+            case '(':
+            case '[':
+            case '{':
+                System.out.println("input isn,t correct");
+                return;
+        }
+
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '(' || input.charAt(i) == '[' || input.charAt(i) == '{') {
+                stack.push(input.charAt(i));
+
+            } else if (input.charAt(i) == ')' && stack.peek() == '(') {
+                stack.pop();
+
+            } else if (input.charAt(i) == ']' && stack.peek() == '[') {
+                stack.pop();
+
+            } else if (input.charAt(i) == '}' && stack.peek() == '{') {
+                stack.pop();
+
+            } else {
+                System.out.println("input isn,t correct");
+                return;
+            }
+        }
+        System.out.println("input is correct");
+    }
+
 }
