@@ -1,9 +1,10 @@
-import java.nio.charset.Charset;
+
 import java.util.Stack;
 
 /**
  * Created by Евгений on 11.05.2018.
  */
+
 public class Homework03 {
     public static void main(String[] args) {
         task_3_1();
@@ -13,31 +14,50 @@ public class Homework03 {
 
     private static void task_3_1() {
 
-        StringBuilder input = new StringBuilder("//a/..////b/./c//.//");
+        String input = "sss/a//.///ab/.././//bc/./cd/../da//..//.//";
+        char[] chars = input.toCharArray();
 
-        int i;
+        Stack<Character> stack = new Stack<>();
+        stack.push('/');
 
-        while ((i = input.indexOf("/./")) != -1) {
-            input.delete(i, i + 2);
+        int startChar = 0;
+
+        while (chars[startChar] != '/') {
+            startChar++;
         }
 
-        while ((i = input.indexOf("/../")) != -1) {
-            input.delete(i - 2, i + 3);
+        for (int i = startChar; i < chars.length; i++) {
+
+            if (stack.peek() == '/' && chars[i] == '/') {
+                continue;
+            }
+
+            if (stack.peek() == '/' && chars[i] == '.' && chars[i + 1] == '/') {
+                i++;
+                continue;
+            }
+
+            if (stack.peek() == '/' && chars[i] == '.' && chars[i + 1] == '.' && chars[i + 2] == '/') {
+                stack.pop();
+                i += 2;
+                while (stack.peek() != '/') {
+                    stack.pop();
+                }
+                continue;
+            }
+
+            stack.push(chars[i]);
         }
 
-        while ((i = input.indexOf("//")) != -1) {
-            input.delete(i, i + 1);
+        if (stack.peek() == '/') {
+            stack.pop();
         }
 
-        while (input.charAt(input.length() - 1) == '/') {
-            input.delete(input.length() - 1, input.length());
-        }
-
-        System.out.println(input);
+        stack.forEach(System.out::print);
     }
 
-
     //=================================
+
     private static void task_3_2() {
 
         String input = "([])[({(())})]";
